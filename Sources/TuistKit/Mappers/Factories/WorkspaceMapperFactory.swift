@@ -73,10 +73,6 @@ final class WorkspaceMapperFactory: WorkspaceMapperFactorying {
         )
 
         mappers.append(
-            ModuleMapMapper()
-        )
-
-        mappers.append(
             LastUpgradeVersionWorkspaceMapper()
         )
 
