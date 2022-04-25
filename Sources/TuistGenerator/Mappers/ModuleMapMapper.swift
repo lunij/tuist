@@ -77,6 +77,7 @@ public final class ModuleMapMapper: WorkspaceMapping {
             for targetIndex in 0 ..< mappedProject.targets.count {
                 var mappedTarget = mappedProject.targets[targetIndex]
                 let targetID = TargetID(projectPath: mappedProject.path, targetName: mappedTarget.name)
+                print("\n\(#function) \(mappedTarget.name) BEFORE -> \(mappedTarget.settings)")
                 var mappedSettingsDictionary = mappedTarget.settings?.base ?? [:]
                 let hasModuleMap = mappedSettingsDictionary[Self.modulemapFileSetting] != nil
                 guard hasModuleMap || !(targetToModuleMaps[targetID]?.isEmpty ?? true) else { continue }
@@ -90,6 +91,7 @@ public final class ModuleMapMapper: WorkspaceMapping {
                     oldOtherSwiftFlags: mappedSettingsDictionary[Self.otherSwiftFlagsSetting],
                     targetToModuleMaps: targetToModuleMaps
                 ) {
+                    print("\(#function) \(updatedOtherSwiftFlags)")
                     mappedSettingsDictionary[Self.otherSwiftFlagsSetting] = updatedOtherSwiftFlags
                 }
 
@@ -101,12 +103,14 @@ public final class ModuleMapMapper: WorkspaceMapping {
                     mappedSettingsDictionary[Self.otherCFlagsSetting] = updatedOtherCFlags
                 }
 
+                print("\(#function) \(mappedSettingsDictionary)")
                 let targetSettings = mappedTarget.settings ?? Settings(
                     base: [:],
                     configurations: [:],
                     defaultSettings: mappedProject.settings.defaultSettings
                 )
                 mappedTarget.settings = targetSettings.with(base: mappedSettingsDictionary)
+                print("\n\(#function) \(mappedTarget.name) AFTER -> \(mappedTarget.settings)")
                 mappedProject.targets[targetIndex] = mappedTarget
             }
             mappedWorkspace.projects[projectIndex] = mappedProject
@@ -198,6 +202,7 @@ public final class ModuleMapMapper: WorkspaceMapping {
                     absolutePath = "\(pathString)/\(dependencyModuleMap)"
                 }
 
+                print(absolutePath)
                 dependenciesModuleMaps.insert(AbsolutePath(absolutePath))
             }
 
@@ -217,6 +222,7 @@ public final class ModuleMapMapper: WorkspaceMapping {
         targetToModuleMaps: [TargetID: Set<AbsolutePath>]
     ) -> SettingsDictionary.Value? {
         guard let dependenciesModuleMaps = targetToModuleMaps[targetID], !dependenciesModuleMaps.isEmpty else { return nil }
+        print("\(#function) \(dependenciesModuleMaps)")
 
         var mappedOtherSwiftFlags: [String]
         switch oldOtherSwiftFlags ?? .array(["$(inherited)"]) {
@@ -233,6 +239,7 @@ public final class ModuleMapMapper: WorkspaceMapping {
             ])
         }
 
+        print(mappedOtherSwiftFlags)
         return .array(mappedOtherSwiftFlags)
     }
 
