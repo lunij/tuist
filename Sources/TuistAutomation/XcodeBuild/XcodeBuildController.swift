@@ -194,7 +194,7 @@ public final class XcodeBuildController: XcodeBuildControlling {
             // like that's happening.
             .timeout(.seconds(20), scheduler: DispatchQueue.main, customError: { ShowBuildSettingsError.timeout })
             .retry(5)
-            .values
+            .values2
         var buildSettingsByTargetName = [String: XcodeBuildSettings]()
         for try await string in values {
             var currentSettings: [String: String] = [:]
@@ -242,7 +242,7 @@ public final class XcodeBuildController: XcodeBuildControlling {
 
     fileprivate func run(command: [String], isVerbose: Bool) -> AsyncThrowingStream<SystemEvent<XcodeBuildOutput>, Error> {
         run(command: command, isVerbose: isVerbose)
-            .mapAsXcodeBuildOutput().values
+            .mapAsXcodeBuildOutput().values2
     }
 
     fileprivate func run(command: [String], isVerbose: Bool) -> AnyPublisher<SystemEvent<Data>, Error> {

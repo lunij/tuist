@@ -145,7 +145,7 @@ public final class System: Systeming {
     public func runAndCollectOutput(_ arguments: [String]) async throws -> SystemCollectedOutput {
         var values = publisher(arguments)
             .mapToString()
-            .collectOutput().values.makeAsyncIterator()
+            .collectOutput().values2.makeAsyncIterator()
 
         return try await values.next()!
     }
