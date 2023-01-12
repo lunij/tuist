@@ -107,6 +107,8 @@ public final class DependenciesContentHasher: DependenciesContentHashing {
             }
         case let .package(product):
             return try contentHasher.hash("package-\(product)")
+        case let .packagePlugin(product):
+            return try contentHasher.hash("packageplugin-\(product)")
         case let .sdk(name, status):
             return try contentHasher.hash("sdk-\(name)-\(status)")
         case .xctest:

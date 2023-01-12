@@ -164,6 +164,9 @@ public final class GraphLoader: GraphLoading {
         case let .package(product):
             return try loadPackage(fromPath: path, productName: product)
 
+        case let .packagePlugin(product):
+            return try loadPackage(fromPath: path, productName: product)
+
         case .xctest:
             return try loadXCTestSDK(platform: fromPlatform)
         }

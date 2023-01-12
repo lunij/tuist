@@ -144,6 +144,43 @@ final class TargetGeneratorTests: XCTestCase {
         ])
     }
 
+    func test_generateTargetPackagePlugins() throws {
+        // Given
+        let package = Package.remote(url: "remote", requirement: .branch("main"))
+        let target = Target.test()
+        let nativeTarget = createNativeTarget(for: target)
+        let graph = Graph.test(
+            projects: [path: .test(path: path)],
+            packages: [path: ["Test": package]],
+            targets: [
+                path: [
+                    target.name: target
+                ]
+            ],
+            dependencies: [
+                .target(name: target.name, path: path): [
+                    .packageProduct(path: path, product: "PackagePlugin")
+                ]
+            ]
+        )
+        let graphTraverser = GraphTraverser(graph: graph)
+
+        // When
+        try subject.generateTargetDependencies(
+            path: path,
+            targets: [target],
+            nativeTargets: [
+                "Target": nativeTarget
+            ],
+            graphTraverser: graphTraverser
+        )
+
+        // Then
+        XCTAssertEqual(nativeTarget.dependencies.map(\.name), [
+            "PackagePlugin"
+        ])
+    }
+
     func test_generateTarget_actions() throws {
         // Given
         let graph = Graph.test()

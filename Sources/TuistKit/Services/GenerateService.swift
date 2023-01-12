@@ -14,14 +14,12 @@ final class GenerateService {
     private let timeTakenLoggerFormatter: TimeTakenLoggerFormatting
     private let generatorFactory: GeneratorFactorying
     private let configLoader: ConfigLoading
-    private let manifestLoader: ManifestLoading
     private let pluginService: PluginServicing
 
     init(
         clock: Clock = WallClock(),
         timeTakenLoggerFormatter: TimeTakenLoggerFormatting = TimeTakenLoggerFormatter(),
         configLoader: ConfigLoading = ConfigLoader(manifestLoader: ManifestLoader()),
-        manifestLoader: ManifestLoading = ManifestLoader(),
         opener: Opening = Opener(),
         generatorFactory: GeneratorFactorying = GeneratorFactory(),
         pluginService: PluginServicing = PluginService()
@@ -29,7 +27,6 @@ final class GenerateService {
         self.clock = clock
         self.timeTakenLoggerFormatter = timeTakenLoggerFormatter
         self.configLoader = configLoader
-        self.manifestLoader = manifestLoader
         self.opener = opener
         self.generatorFactory = generatorFactory
         self.pluginService = pluginService

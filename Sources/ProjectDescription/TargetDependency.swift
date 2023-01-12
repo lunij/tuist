@@ -55,6 +55,8 @@ public enum TargetDependency: Codable, Hashable {
     ///              e.g. RxSwift
     case package(product: String)
 
+    case packagePlugin(product: String)
+
     /// Dependency on system library or framework
     ///
     /// - Parameters:
@@ -107,6 +109,8 @@ public enum TargetDependency: Codable, Hashable {
             return "library"
         case .package:
             return "package"
+        case .packagePlugin:
+            return "packageplugin"
         case .sdk:
             return "sdk"
         case .xcframework:
