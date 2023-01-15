@@ -50,7 +50,7 @@ class Generator: Generating {
 
     func generateWithGraph(path: AbsolutePath) async throws -> (AbsolutePath, Graph) {
         let (graph, sideEffects) = try await load(path: path)
-
+        print(graph)
         // Load
         let graphTraverser = GraphTraverser(graph: graph)
 
